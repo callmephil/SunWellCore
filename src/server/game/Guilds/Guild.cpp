@@ -1845,8 +1845,6 @@ void Guild::SendBankTabData(WorldSession* session, uint8 tabId) const
 
 void Guild::SendBankTabsInfo(WorldSession* session, bool sendAllSlots /*= false*/) const
 {
-    if (session->GetSecurity())
-        return;
     _SendBankList(session, 0, sendAllSlots);
 }
 
@@ -2842,6 +2840,10 @@ void Guild::_BroadcastEvent(GuildEvents guildEvent, uint64 guid, const char* par
 
 void Guild::_SendBankList(WorldSession* session /* = NULL*/, uint8 tabId /*= 0*/, bool sendAllSlots /*= false*/, SlotIds *slots /*= NULL*/) const
 {
+	Member const* member = GetMember(session->GetPlayer()->GetGUID());
+	if (!member) // Shouldn't happen, just in case
+		return;
+	
     WorldPacket data(SMSG_GUILD_BANK_LIST, 500);
     data << uint64(m_bankMoney);
     data << uint8(tabId);
