@@ -19192,10 +19192,20 @@ void Unit::BuildValuesUpdate(uint8 updateType, ByteBuffer* data, Player* target)
             {
 				if (target->IsSpectator() && target->FindMap() && target->FindMap()->IsBattleArena() && (this->GetTypeId() == TYPEID_PLAYER || this->GetTypeId() == TYPEID_UNIT || this->GetTypeId() == TYPEID_DYNAMICOBJECT)) // pussywizard
 				{
-					if (index == UNIT_FIELD_BYTES_2)
-						fieldBuffer << (m_uint32Values[index] & 0xFFFFF2FF); // clear UNIT_BYTE2_FLAG_PVP, UNIT_BYTE2_FLAG_FFA_PVP, UNIT_BYTE2_FLAG_SANCTUARY
+					if (IsControlledByPlayer() && target != this && sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_INTERACTION_GROUP) && IsInRaidWith(target)) // @Not Sure About that
+					{
+						FactionTemplateEntry const* ft1 = GetFactionTemplateEntry();
+						FactionTemplateEntry const* ft2 = target->GetFactionTemplateEntry();
+						if (ft1 && ft2 && !ft1->IsFriendlyTo(*ft2))
+						{
+							if (index == UNIT_FIELD_BYTES_2)
+								fieldBuffer << (m_uint32Values[index] & 0xFFFFF2FF); // clear UNIT_BYTE2_FLAG_PVP, UNIT_BYTE2_FLAG_FFA_PVP, UNIT_BYTE2_FLAG_SANCTUARY
+							else
+								fieldBuffer << (uint32)target->getFaction();
+						}
+					}
 					else
-						fieldBuffer << (uint32)target->getFaction();
+						fieldBuffer << m_uint32Values[index];
 				}
                 else
                     fieldBuffer << m_uint32Values[index];
