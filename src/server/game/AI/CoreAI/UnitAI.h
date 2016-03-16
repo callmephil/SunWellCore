@@ -118,13 +118,8 @@ struct NonTankTargetSelector : public std::unary_function<Unit*, bool>
 // Simple selector for units using mana
 struct PowerUsersSelector : public std::unary_function<Unit*, bool>
 {
-    Unit const* _me;
-    float const _dist;
-    bool const _playerOnly;
-	Powers const _power;
-
-
-    PowerUsersSelector(Unit const* unit, Powers power, float dist, bool playerOnly) : _me(unit), _power(power), _dist(dist), _playerOnly(playerOnly) { }
+	public:
+		PowerUsersSelector(Unit const* unit, Powers power, float dist, bool playerOnly) : _me(unit), _power(power), _dist(dist), _playerOnly(playerOnly) { }
 
     bool operator()(Unit const* target) const
     {
@@ -145,12 +140,18 @@ struct PowerUsersSelector : public std::unary_function<Unit*, bool>
 
         return true;
     }
+	
+	private:
+		Unit const* _me;
+		Powers const _power;
+		float const _dist;
+		bool const _playerOnly;
 };
 
 struct FarthestTargetSelector : public std::unary_function<Unit*, bool>
 {
+	public:
     FarthestTargetSelector(Unit const* unit, float dist, bool playerOnly, bool inLos) : _me(unit), _dist(dist), _playerOnly(playerOnly), _inLos(inLos) {}
-
     bool operator()(Unit const* target) const
     {
         if (!_me || !target)

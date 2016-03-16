@@ -1453,7 +1453,7 @@ namespace Trinity
 	{
 		public:
 			explicit RandomCheck(uint8 chance) : _chance(chance) { }
-			bool operator()(WorldObject const* object) const
+			bool operator()(WorldObject const* /*object*/) const
 			{
 				return roll_chance_i(_chance);
 			}

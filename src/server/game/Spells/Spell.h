@@ -474,6 +474,7 @@ class Spell
         void HandleThreatSpells();
 
         SpellInfo const* const m_spellInfo;
+        SpellValue * const m_spellValue;
         Item* m_CastItem;
         uint64 m_castItemGUID;
         uint8 m_cast_count;
@@ -546,8 +547,6 @@ class Spell
         void SendLoot(uint64 guid, LootType loottype);
 
         Unit* const m_caster;
-
-        SpellValue * const m_spellValue;
 
         uint64 m_originalCasterGUID;                        // real source of cast (aura caster/etc), used for spell targets selection
                                                             // e.g. damage around area spell trigered by victim aura and damage enemies of aura caster
