@@ -159,7 +159,7 @@ class spell_mage_burning_determination : public SpellScriptLoader
 				return true;
             }
 
-            void HandleProc(AuraEffect const* aurEff, ProcEventInfo& eventInfo)
+            void HandleProc(AuraEffect const* /*aurEff*/, ProcEventInfo& /*eventInfo*/)
             {
                 PreventDefaultAction();
 				GetUnitOwner()->CastSpell(GetUnitOwner(), 54748, true);
@@ -226,7 +226,7 @@ public:
 			GetTarget()->CastSpell((Unit*)NULL, GetSpellInfo()->Effects[aurEff->GetEffIndex()].TriggerSpell, true);
         }
 
-		void CalcPeriodic(AuraEffect const* /*effect*/, bool& isPeriodic, int32& amplitude)
+		void CalcPeriodic(AuraEffect const* /*effect*/, bool& isPeriodic, int32& /*amplitude*/)
         {
             isPeriodic = false;
         }
@@ -349,12 +349,12 @@ class spell_mage_pet_scaling : public SpellScriptLoader
 				}
             }
 
-			void CalculateAPAmount(AuraEffect const* aurEff, int32 & amount, bool & /*canBeRecalculated*/)
+			void CalculateAPAmount(AuraEffect const* /*aurEff*/, int32 & amount, bool & /*canBeRecalculated*/)
             {
 				// xinef: mage pet inherits 0% AP
             }
 
-			void CalculateSPAmount(AuraEffect const* aurEff, int32 & amount, bool & /*canBeRecalculated*/)
+			void CalculateSPAmount(AuraEffect const* /*aurEff*/, int32 & amount, bool & /*canBeRecalculated*/)
             {
 				// xinef: mage pet inherits 33% of SP
 				if (Unit* owner = GetUnitOwner()->GetOwner())
@@ -826,7 +826,7 @@ class spell_mage_ignite : public SpellScriptLoader
 				return true;
             }
 
-            void HandleProc(AuraEffect const* aurEff, ProcEventInfo& eventInfo)
+            void HandleProc(AuraEffect const* /*aurEff*/, ProcEventInfo& eventInfo)
             {
                 PreventDefaultAction();
 
