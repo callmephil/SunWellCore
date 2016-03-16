@@ -242,7 +242,7 @@ void WorldSession::HandleWhoOpcode(WorldPacket& recvData)
 
 	uint32 team = _player->GetTeamId();
 	uint32 security = GetSecurity();
-	//bool allowTwoSideWhoList = sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_WHO_LIST);
+	bool allowTwoSideWhoList = sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_WHO_LIST);
 	uint32 gmLevelInWhoList = sWorld->getIntConfig(CONFIG_GM_LEVEL_IN_WHO_LIST);
 	uint32 displaycount = 0;
 
@@ -257,7 +257,7 @@ void WorldSession::HandleWhoOpcode(WorldPacket& recvData)
 		if (AccountMgr::IsPlayerAccount(security))
 		{
 			// player can see member of other team only if CONFIG_ALLOW_TWO_SIDE_WHO_LIST
-			if (itr->second->GetTeamId() != team /* && !allowTwoSideWhoList*/)
+			if (itr->second->GetTeamId() != team  && !allowTwoSideWhoList)
 				continue;
 
 			// player can see MODERATOR, GAME MASTER, ADMINISTRATOR only if CONFIG_GM_IN_WHO_LIST
@@ -544,7 +544,7 @@ void WorldSession::HandleAddFriendOpcode(WorldPacket & recv_data)
         {
             if (friendGuid == GetPlayer()->GetGUID())
                 friendResult = FRIEND_SELF;
-            else if (GetPlayer()->GetTeamId() != teamId && AccountMgr::IsPlayerAccount(GetSecurity()))
+			else if (GetPlayer()->GetTeamId() != teamId && !sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_ADD_FRIEND)  && AccountMgr::IsPlayerAccount(GetSecurity()))
                 friendResult = FRIEND_ENEMY;
             else if (GetPlayer()->GetSocial()->HasFriend(guidLow))
                 friendResult = FRIEND_ALREADY;
